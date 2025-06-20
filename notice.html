@@ -2,47 +2,192 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Notice of Delivery</title>
+<title>Delivery Schedule</title>
 <style>
-body { font-family: Arial, sans-serif; font-size: 14px; }
-h1, h2 { text-align: center; }
-table { border-collapse: collapse; width: 100%; margin: 10px 0; }
-th, td { border: 1px solid #000; padding: 5px; text-align: left; }
+body {
+  font-family: Tahoma, sans-serif;
+  font-size: 8pt;
+  margin: 10px;
+}
+h1, h2, h3 {
+  text-align: center;
+  margin: 2px 0;
+}
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 5px;
+}
+.info-table col {
+  width: 33.33%;
+}
+.info-table td {
+  padding: 2px 4px;
+  vertical-align: top;
+  text-align: left;
+}
+.section-label {
+  font-weight: bold;
+  margin: 10px 0 4px 0;
+}
+table.delivery-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.delivery-table th, .delivery-table td {
+  border: 1px solid #000;
+  padding: 2px 4px;
+  text-align: left;
+}
+.signature-block {
+  margin-top: 50px;
+}
+.signature-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.signature {
+  width: 30%;
+  text-align: center;
+}
+.signature-line {
+  margin-top: 40px;
+  border-top: 1px solid #000;
+  width: 100%;
+}
 </style>
 </head>
 <body>
+
 <h2>PROCUREMENT SERVICE</h2>
+<h3>Department of Budget and Management</h3>
 <h3>WAREHOUSING AND DELIVERY DIVISION</h3>
-<p>8-290-6300 LOC 8005</p>
-<h1>NOTICE OF DELIVERY</h1>
-<table>
-<tr><td>CONTROL NO.:</td><td>{{control_no}}</td></tr>
-<tr><td>FORWARDER:</td><td>{{forwarder}}</td></tr>
-<tr><td>DATE:</td><td>{{date}}</td></tr>
+<h2 style="margin-top: 20px;">NOTICE OF DELIVERY</h2>
+
+<!-- Aligned Table 1: Doc Info -->
+<table class="info-table">
+  <colgroup><col><col><col></colgroup>
+  <tr>
+    <td><strong>Doc No:</strong> <span id="docno">________</span></td>
+    <td><strong>Date:</strong> <span id="date">________</span></td>
+    <td><strong>Driver:</strong> <span id="forwarder">________</span></td>
+  </tr>
 </table>
-<table>
-<tr>
-<th>Destination</th><th>Truck</th><th>Qty</th><th>Date of Pick-up</th><th>Time</th><th>Loading Date</th><th>Vessel Departure</th><th>Estimated Date of Delivery to Depot</th>
-</tr>
-<!-- Each entry in the 'delivery_rows' field is separated by @ -->
-{{delivery_rows}}
+
+<div class="section-label">NOD Details</div>
+<table class="delivery-table" id="delivery-table">
+  <thead>
+    <tr>
+      <th>Depot</th>
+      <th>Truck</th>
+      <th>Qty</th>
+      <th>Date of Pick-up</th>		
+      <th>Time</th>
+      <th>Loading Date</th>
+      <th>Vessel Departure</th>
+      <th>ETA</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
 </table>
-<h3>REMARKS:</h3>
-<p>{{remarks}}</p>
-<table>
-<tr><td>PREPARED BY:</td><td>{{prepared_by}}</td></tr>
-<tr><td>CONFORME:</td><td>{{conforme}}</td></tr>
-<tr><td>APPROVED BY:</td><td>CATHERINE ANN D. MIRABEL<br>CHIEF, WADD</td></tr>
+
+<table class="info-table">
+  <tr><td><strong>Remarks:</strong> </td></tr>
 </table>
-<p>Note:<br>
-* Please confirm within 24 hours upon receipt of this NOD.<br>
-* Non receipt of this NOD shall be treated as NO CONFIRMATION.<br>
-* No confirmed NOD, No Pick-Up.
-</p>
-<table>
-<tr><td>Depot Address:</td><td>{{depot_address}}</td></tr>
-<tr><td>Contact Person:</td><td>{{contact_person}}</td></tr>
-<tr><td>Contact Number:</td><td>{{contact_number}}</td></tr>
+
+<!-- Signature Section -->
+<div class="signature-section">
+  <div class="signature">
+    <div>Prepared by:</div>
+    <div class="signature-line"></div>
+    <div id="preparedName">(User / DS3)</div>
+  </div>
+  <div class="signature">
+    <div>Driver:</div>
+    <div class="signature-line"></div>
+    <div id="freight">__________________</div>
+  </div>
+</div>
+
+<!-- Approval Block -->
+<div class="signature-block">
+  <div>Approved by:</div>
+  <div class="signature-line" style="width: 40%;"></div>
+  <div><strong>Catherine Ann D. Mirabel</strong><br>Chief, WADD</div>
+</div>
+
+<div class="section-label">NOD Details</div>
+<table class="delivery-table" id="nod-table">
+  <thead>
+    <tr>
+      <th>Depot</th>
+      <th>Address</th>
+      <th>Contact Person</th>
+      <th>Contact Number</th>		
+    </tr>
+  </thead>
+  <tbody></tbody>
 </table>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+
+// Header Info
+document.getElementById("docno").textContent = urlParams.get("docno") || "________";
+document.getElementById("date").textContent = urlParams.get("date") || "________";
+document.getElementById("forwarder").textContent = urlParams.get("forwarder") || "________";
+document.getElementById("preparedName").textContent = urlParams.get("prepared") || "(User / DS3)";
+document.getElementById("freight").textContent = urlParams.get("freight") || "__________________";
+
+// Main Delivery Table
+const deliveryData = urlParams.get("data") || ""; 
+const deliveryItems = deliveryData.split("@");
+const deliveryTableBody = document.querySelector("#delivery-table tbody");
+
+for (let i = 0; i < deliveryItems.length; i += 8) {
+  const row = document.createElement("tr");
+  const fields = [
+    deliveryItems[i]?.trim() || "",
+    deliveryItems[i + 1]?.trim() || "",
+    deliveryItems[i + 2]?.trim() || "",
+    deliveryItems[i + 3]?.trim() || "",
+    deliveryItems[i + 4]?.trim() || "",
+    deliveryItems[i + 5]?.trim() || "",
+    deliveryItems[i + 6]?.trim() || "",
+    deliveryItems[i + 7]?.trim() || ""
+  ];
+  fields.forEach(text => {
+    const cell = document.createElement("td");
+    cell.textContent = text;
+    row.appendChild(cell);
+  });
+  deliveryTableBody.appendChild(row);
+}
+
+// NOD Details Table
+const nodData = urlParams.get("nodData") || ""; 
+const nodItems = nodData.split("@");
+const nodTableBody = document.querySelector("#nod-table tbody");
+
+for (let i = 0; i < nodItems.length; i += 4) {
+  const row = document.createElement("tr");
+  const fields = [
+    nodItems[i]?.trim() || "",
+    nodItems[i + 1]?.trim() || "",
+    nodItems[i + 2]?.trim() || "",
+    nodItems[i + 3]?.trim() || ""
+  ];
+  fields.forEach(text => {
+    const cell = document.createElement("td");
+    cell.textContent = text;
+    row.appendChild(cell);
+  });
+  nodTableBody.appendChild(row);
+}
+</script>
+
 </body>
 </html>
+
