@@ -16,7 +16,7 @@ h1, h2, h3 {
 .info-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 .info-table col {
   width: 33.33%;
@@ -61,10 +61,21 @@ table.delivery-table {
 </head>
 <body>
 
-<h2>PROCUREMENT SERVICE</h2>
-<h3>Department of Budget and Management</h3>
-<h3>WAREHOUSING AND DELIVERY DIVISION</h3>
-<h2 style="margin-top: 20px;">NOTICE OF DELIVERY</h2>
+<!-- LOGOS + HEADER -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+  <img src="logo1.png" alt="Logo 1" style="height: 50px;">
+  <div style="text-align: center;">
+    <h2 style="margin: 0">PROCUREMENT SERVICE</h2>
+    <h3 style="margin: 0">Department of Budget and Management</h3>
+    <h3 style="margin: 0">WAREHOUSING AND DELIVERY DIVISION</h3>
+  </div>
+  <img src="https://ps-philgeps.gov.ph/home/images/LOGOs/combined_LOGO.png" alt="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Department_of_Budget_and_Management_%28DBM%29.svg/720px-Department_of_Budget_and_Management_%28DBM%29.svg.png?20180223204850" style="height: 50px;">
+</div>
+
+<!-- NOTICE OF DELIVERY -->
+<h2 style="margin: 20px 0 10px 0; text-align: center;">
+  NOTICE OF DELIVERY
+</h2>
 
 <!-- Aligned Table 1: Doc Info -->
 <table class="info-table">
@@ -118,7 +129,7 @@ table.delivery-table {
   <div><strong>Catherine Ann D. Mirabel</strong><br>Chief, WADD</div>
 </div>
 
-<div class="section-label">Depot Details</div>
+<div class="section-label">NOD Details</div>
 <table class="delivery-table" id="nod-table">
   <thead>
     <tr>
@@ -190,4 +201,3 @@ for (let i = 0; i < nodItems.length; i += 4) {
 
 </body>
 </html>
-
